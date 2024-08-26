@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Tabelle mit Auswahl</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        @media (max-width: 600px) {
+            table {
+                width: 100%;
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            th, td {
+                display: block;
+                text-align: right;
+            }
+
+            th::before, td::before {
+                content: attr(data-label);
+                display: inline-block;
+                width: 6em;
+                font-weight: bold;
+            }
+
+            td {
+                text-align: left;
+                padding-left: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Responsive Tabelle</h1>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Alter</th>
+                <th>Beruf</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="checkbox" class="row-select"></td>
+                <td>Max Mustermann</td>
+                <td>30</td>
+                <td>Ingenieur</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="row-select"></td>
+                <td>Erika Mustermann</td>
+                <td>28</td>
+                <td>Designer</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="row-select"></td>
+                <td>Hans Müller</td>
+                <td>35</td>
+                <td>Manager</td>
+            </tr>
+        </tbody>
+    </table>
+    <button id="show-selected">Ausgewählte anzeigen</button>
+
+    <script>
+        document.getElementById('show-selected').addEventListener('click', () => {
+            const selectedRows = Array.from(document.querySelectorAll('.row-select:checked'))
+                .map(checkbox => {
+                    const row = checkbox.closest('tr');
+                    return Array.from(row.children).map(cell => cell.textContent.trim()).join(' | ');
+                });
+
+            if (selectedRows.length) {
+                alert('Ausgewählte Zeilen:\n' + selectedRows.join('\n'));
+            } else {
+                alert('Keine Zeilen ausgewählt.');
+            }
+        });
+    </script>
+</body>
+</html>
+
